@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>錯誤</title>
+    <link rel="stylesheet" href={{ url_for('static', filename="css/work.css" ) }}>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@latest/style.css" />
+    <style>
+        body{
+            font-family: "LXGW WenKai Mono";
+            font-weight: normal;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-box">
+        <h2>{{error_h2}}</h2>
+        <form id="loginForm" method="POST" action="/login">
+            <p>{{error_p}}</p>
+
+            <a href="/" data-C="red" style="float: right">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                返回
+            </a>
+        </form>
+    </div>
+</body>
+
+</html>

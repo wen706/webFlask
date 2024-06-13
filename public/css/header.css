@@ -1,0 +1,62 @@
+.header {
+  display: flex;
+  justify-content: center;
+  /* 水平置中 */
+  height: 40px;
+  /* 固定高度 */
+}
+
+.header button {
+  padding: 10px;
+  /* 添加內邊距 */
+  background-color: #BB6688;
+  /* 按鈕背景顏色 */
+  color: #fff;
+  /* 文字顏色 */
+  border: none;
+  /* 移除邊框 */
+  cursor: pointer;
+  /* 鼠標樣式為手型 */
+  width: 40px;
+  /* 設置按鈕寬度為 40px */
+  height: 40px;
+  /* 設置按鈕高度為 40px */
+}
+
+.header button img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.search-container {
+  flex: 1; /* 將搜尋框彈性增長以填滿剩餘空間 */
+  display: flex;
+  border-radius: 10px; /* 圓角半徑 */
+  overflow: hidden; /* 超出部分隱藏 */
+  background-color: #000; /* 背景顏色為黑色 */
+}
+
+.search-container input {
+  text-align: left;
+  flex: 1; /* 將搜尋框彈性增長以填滿剩餘空間 */
+  padding: 10px; /* 添加內邊距 */
+  background-color: #000233; /* 搜尋框背景顏色為黑色 */
+  color: #fff; /* 文字顏色 */
+  border: none; /* 移除邊框 */
+  width: 100%; /* 將搜尋框寬度設置為 100% */
+}
+
+.search-container button {
+  padding: 10px; /* 添加內邊距 */
+  background-color: #BB6688; /* 按鈕背景顏色 */
+  color: #fff; /* 文字顏色 */
+  border: none; /* 移除邊框 */
+  cursor: pointer; /* 鼠標樣式為手型 */
+  width: 40px; /* 設置按鈕寬度為 40px */
+  height: 40px; /* 設置按鈕高度為 40px */
+}
+.search-container button img{
+  display: block;
+  width: 100%;
+  height: auto;
+}

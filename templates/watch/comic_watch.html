@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comic Viewer</title>
+    <link rel="stylesheet" href={{ url_for('static', filename="css/header.css" ) }}>
+    <link rel="stylesheet" href={{ url_for('static', filename="css/all.css" ) }}>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@latest/style.css" />
+    <style>
+        body {
+            font-family: "LXGW WenKai Mono";
+            font-weight: normal;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(#8888CC, #BB6688);
+            background-attachment: fixed;
+        }
+
+        #comicImage {
+            width: auto;
+            height: 100vmin;
+            object-fit: cover;
+            cursor: pointer;
+            user-select: none !important;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (orientation: landscape) {
+            #comicImage {
+                height: calc(100vh - 40px);
+                width: auto;
+            }
+        }
+
+        /* 豎向視口 */
+        @media (orientation: portrait) {
+            #comicImage {
+                width: 100vw;
+                height: auto;
+            }
+        }
+
+        .page-info {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: opacity 0.5s ease-in-out;
+            opacity: 1;
+        }
+
+        .page-info.hidden {
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <button id="HomeButton" type="button" onclick="HomeButtonClick()">
+            <img src={{ url_for('static', filename="icon/home.png" ) }} alt="Image">
+        </button>
+        <form class="search-container">
+            <input id="searchInput" type="text" placeholder="搜尋..." autocomplete="off" onkeydown="search(event)">
+            <button onclick="search_click()" type="button">
+                <img src={{ url_for('static', filename="icon/search.png" ) }} alt="Image">
+            </button>
+        </form>
+        <button type="button" onclick="SettingButtonClick()">
+            <img src={{ url_for('static', filename="icon/settings.png" ) }} alt="Image">
+        </button>
+    </div>
+    <script>
+        function search_click() {
+            var searchText = document.getElementById('searchInput').value;
+            searchText = searchText.replace(/\s/g, '&');
+            window.location.href = '/comic?search=' + searchText;
+        }
+        function search(event) {
+            if (event.keyCode === 13) {
+                search_click();
+            }
+        }
+        function HomeButtonClick(event) { window.location.href = '/comic'; }
+        function SettingButtonClick(event) { window.location.href = '/'; }
+    </script>
+    <img id="comicImage" src="/comicImg/{{id}}/{{page}}.jpg" alt="Comic Page">
+
+    <script>
+        const comicImage = document.getElementById("comicImage");
+        let currentPage = parseInt("{{page}}");
+        const totalPages = parseInt("{{totopage}}");
+        const comicId = "{{id}}";
+        const pageInfo = document.getElementById("pageInfo");
+
+        comicImage.addEventListener("click", function (event) {
+            const halfWidth = comicImage.offsetWidth / 2;
+            const imageLeft = comicImage.getBoundingClientRect().left;
+            const clickX = event.clientX - imageLeft;
+            if (clickX < halfWidth) {
+                // 左半邊，上一頁操作
+                if (currentPage > 1) {
+                    currentPage--;
+                    changeImage();
+                }
+            } else {
+                // 右半邊，下一頁操作
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    changeImage();
+                }
+            }
+        });
+
+        function preloadImages() {
+            for (var i = 1; i <= totalPages; i++) {
+                var img = new Image();
+                img.src = '/comicImg/' + comicId + '/' + i + '.jpg';
+            }
+        }
+
+        function changeImage() {
+            comicImage.src = '/comicImg/' + comicId + '/' + currentPage + '.jpg'; //更新漫畫圖片 
+            pageInfo.textContent = currentPage + " / " + totalPages; // 更新頁數顯示
+            pageInfo.classList.remove('hidden'); // 顯示頁數信息
+
+            setTimeout(function () {
+                pageInfo.classList.add('hidden'); // 0.5秒後隱藏頁數信息
+            }, 500);
+
+            history.replaceState(null, null, currentPage);
+        }
+
+        preloadImages();
+    </script>
+</body>
+
+</html>

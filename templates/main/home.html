@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <title>墮落之翼的網站</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/work.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@latest/style.css" />
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            justify-content: center;
+            font-family: "LXGW WenKai Mono";
+            background-attachment: fixed;
+        }
+
+        @media (orientation: landscape) {
+            .all_w {
+                width: 50%;
+                max-width: 800px;
+                margin: 0 auto;
+                text-align: center;
+                box-sizing: border-box;
+            }
+
+            .IMG {
+                border-radius: 50%;
+                width: 50%;
+                max-width: 800px;
+                height: auto;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (orientation: portrait) {
+            .all_w {
+                width: 100%;
+                max-width: 800px;
+                margin: 0 auto;
+                text-align: center;
+                box-sizing: border-box;
+            }
+
+            .IMG {
+                border-radius: 50%;
+                width: 90%;
+                max-width: 800px;
+                height: auto;
+                box-sizing: border-box;
+            }
+        }
+
+
+        h1 {
+            border: 3px solid;
+            border-radius: 20px;
+            margin: 20px auto;
+            padding: 6px 0;
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+
+
+        a {
+            display: inline-block;
+            max-height: 40px;
+            position: relative;
+            border-radius: 15px;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .home_button {
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .home_button a {
+            width: 80%;
+            text-align: center;
+            padding: 10px;
+        }
+
+        a span {
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="all_w">
+        <h1>墮落之翼</h1>
+        <p>
+            <img class="IMG" src="../icon/avatar.jpg" alt="墮落之翼的大頭照">
+        </p>
+        <p>
+            我做了一個網頁。<br>
+            請大家不要搞破壞！
+        </p>
+        <div class="home_button">
+            {% if login==1 %}
+            <a style="background-color: #BB6688;" href="/comic">
+                看漫畫
+            </a>
+            <a style="background-color: #BB6688;" href="/download">
+                新增漫畫
+            </a>
+            <a style="background-color: #8888CC;" href="/update">
+                漫畫修改
+            </a>
+            <a style="background-color: #8888CC;" href="/confirm">
+                漫畫檢查
+            </a>
+            <a style="background-color: #CCAA88;" href="/logout">
+                登出
+            </a>
+            {% endif %}
+            {% if login==0 %}
+            <a style="background-color: #BB6688;" href="/login">
+                登入以使用更多功能
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>

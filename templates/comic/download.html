@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下載漫畫</title>
+    <link rel="stylesheet" href={{ url_for('static', filename="css/work.css" ) }}>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@latest/style.css" />
+    <style>
+        body {
+            font-family: "LXGW WenKai Mono";
+            font-weight: normal;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-box">
+        <h2>下載漫畫</h2>
+        <form method="POST" action="/download" id="DownloadForm">
+            <div class="user-box">
+                <select id="websites" name="comic_web">
+                    <option value="nhentai">nhentai</option>
+                </select>
+                <label>請選擇漫畫來源</label>
+            </div>
+
+
+            <div class="user-box">
+                <input type="text" name="comic_id" id="comic_id" autocomplete="off" required>
+                <label>請輸入漫畫ID</label>
+            </div>
+            <div class="user-box">
+                <input type="text" name="comic_name" id="comic_name" autocomplete="off" required>
+                <label>請輸入漫畫名稱</label>
+            </div>
+            <div class="user-box">
+                <input type="text" name="comic_page" id="comic_page" autocomplete="off" required>
+                <label>請輸入漫畫頁數</label>
+            </div>
+            <a href="/" data-C="red" id="exit">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                返回
+            </a>
+            <a id="DownloadLink" style="float: right">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                確認
+            </a>
+        </form>
+        <script>
+            document.getElementById('DownloadLink').addEventListener('click', function (event) {
+                event.preventDefault();
+                document.getElementById('DownloadForm').submit();
+            });
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    // 觸發表單的提交動作
+                    document.getElementById('DownloadForm').submit();
+                }
+            });
+        </script>
+    </div>
+
+</body>
+
+</html>

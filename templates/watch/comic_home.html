@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>漫畫首頁</title>
+    <link rel="stylesheet" href={{ url_for('static', filename="css/header.css" ) }}>
+    <link rel="stylesheet" href={{ url_for('static', filename="css/all.css" ) }}>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@latest/style.css" />
+    <style>
+        body {
+            font-family: "LXGW WenKai Mono";
+            font-weight: normal;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(#8888CC, #BB6688);
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <button id="HomeButton" type="button" onclick="HomeButtonClick()">
+            <img src={{ url_for('static', filename="icon/home.png" ) }} alt="Image">
+        </button>
+        <form class="search-container">
+            <input id="searchInput" type="text" placeholder="搜尋..." autocomplete="off" onkeydown="search(event)">
+            <button onclick="search_click()" type="button">
+                <img src={{ url_for('static', filename="icon/search.png" ) }} alt="Image">
+            </button>
+        </form>
+        <button type="button" onclick="SettingButtonClick()">
+            <img src={{ url_for('static', filename="icon/settings.png" ) }} alt="Image">
+        </button>
+    </div>
+    <script>
+        function search_click() {
+            var searchText = document.getElementById('searchInput').value;
+            searchText = searchText.replace(/\s/g, '&');
+            window.location.href = '/comic?search=' + searchText;
+        }
+        function search(event) {
+            if (event.keyCode === 13) {
+                search_click();
+            }
+        }
+        function HomeButtonClick(event) { window.location.href = '/comic'; }
+        function SettingButtonClick(event) { window.location.href = '/'; }
+    </script>
+    <div class="image-link-container">
+        {% for result in search %}
+        <a href="/comic/{{result[0]}}" class="image-link">
+            <img id="comicImage" src="{{ url_for('static', filename='comicImg/' + result[0] + '/1.jpg') }}" alt="Image">
+            <div class="text">{{ result[1] }}</div>
+        </a>
+        {% endfor %}
+
+    </div>
+</body>
+
+</html>

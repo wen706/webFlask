@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增標籤</title>
+    <link rel="stylesheet" href={{ url_for('static', filename="css/work.css" ) }}>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@latest/style.css" />
+    <style>
+        body {
+            font-family: "LXGW WenKai Mono";
+            font-weight: normal;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-box">
+        <h2>新增標籤</h2>
+        <form method="POST" id="DownloadForm">
+            <div class="user-box">
+                <select id="websites" name="new_tag_type">
+                    <option value="Series">系列</option>
+                    <option value="Role">角色</option>
+                    <option value="Tag">標籤</option>
+                </select>
+                <label>請選擇新增的標籤類型</label>
+            </div>
+            <div class="user-box">
+                <input type="text" name="tag_str" id="tag_str" autocomplete="off" required>
+                <label>新增的標籤名稱</label>
+            </div>
+            <a href="/" data-C="red" id="exit">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                返回
+            </a>
+            <a id="DownloadLink" style="float: right">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                確認
+            </a>
+        </form>
+        <script>
+            document.getElementById('DownloadLink').addEventListener('click', function (event) {
+                event.preventDefault(); // 阻止點擊超連結時的默認行為
+
+                // 手動觸發表單提交
+                document.getElementById('DownloadForm').submit();
+            });
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    // 觸發表單的提交動作
+                    document.getElementById('DownloadForm').submit();
+                }
+            });
+        </script>
+    </div>
+</body>
+
+</html>

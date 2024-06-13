@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comic Viewer</title>
+    <link rel="stylesheet" href={{ url_for('static', filename="css/reset.css" ) }}>
+    <link rel="stylesheet" href={{ url_for('static', filename="css/all.css" ) }}>
+    <link rel="stylesheet" href={{ url_for('static', filename="css/header.css" ) }}>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@latest/style.css" />
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            font-family: "LXGW WenKai Mono";
+            font-weight: normal;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(#8888CC, #BB6688);
+        }
+
+        #comicImage {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+            user-select: none !important;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            border-radius: 10px;
+        }
+
+        .tagbox .user-box {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .tagbox .user-box input,
+        .tagbox .user-box select {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #fff;
+            border: none;
+            border-bottom: 1px solid #fff;
+            outline: none;
+            background: transparent;
+            appearance: none;
+        }
+
+        .tagbox .user-box select {
+            cursor: pointer;
+        }
+
+        .tagbox .user-box label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #fff;
+            pointer-events: none;
+            transition: .5s;
+        }
+
+        .tagbox .user-box input:focus~label,
+        .tagbox .user-box input:valid~label,
+        .tagbox .user-box select:focus~label,
+        .tagbox .user-box select:valid~label {
+            top: -20px;
+            left: 0;
+            color: #03e9f4;
+            font-size: 12px;
+        }
+
+        .tagbox .user-box select {
+            padding: 10px 0;
+            /* 調整選擇框內部填充 */
+        }
+
+        .tagbox .user-box select option {
+            color: #000;
+            background: #fff;
+        }
+
+        .tagbox form a {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            color: #03e9f4;
+            font-size: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            overflow: hidden;
+            transition: .5s;
+            margin-top: 40px;
+            letter-spacing: 4px;
+        }
+
+        .tagbox a:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4,
+                0 0 25px #03e9f4,
+                0 0 50px #03e9f4,
+                0 0 100px #03e9f4;
+        }
+
+        .tagbox a span {
+            position: absolute;
+            display: block;
+        }
+
+        .tagbox a span:nth-child(1) {
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #03e9f4);
+            animation: btn-anim1 1s linear infinite;
+        }
+
+        .add {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .tagbox,
+        .box {
+            flex: 1 1 100%;
+            padding: 5px;
+            text-align: center;
+            width: 400px;
+            margin: 2px;
+            background: rgba(0, 0, 0, .5);
+            box-sizing: border-box;
+            box-shadow: 0 5px 5px rgba(0, 0, 0, .6);
+            border-radius: 10px;
+        }
+
+        @media (min-width: 800px) {
+
+            .tagbox,
+            .box {
+                flex: 1 1 30%;
+            }
+        }
+
+        select {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #000000;
+            border: none;
+            border-bottom: 1px solid #fff;
+            outline: none;
+            background: transparent;
+            appearance: none;
+            max-width: 300px;
+        }
+
+        .tagbox form a {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            color: #03e9f4;
+            font-size: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            overflow: hidden;
+            transition: .5s;
+            margin-top: 10px;
+            letter-spacing: 4px;
+        }
+
+        .tagbox a:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4,
+                0 0 25px #03e9f4,
+                0 0 50px #03e9f4,
+                0 0 100px #03e9f4;
+        }
+
+        .tagbox a span {
+            position: absolute;
+            display: block;
+        }
+
+        .tagbox a span:nth-child(1) {
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #03e9f4);
+            animation: btn-anim1 1s linear infinite;
+        }
+
+        @keyframes btn-anim1 {
+            0% {
+                left: -100%;
+            }
+
+            50%,
+            100% {
+                left: 100%;
+            }
+        }
+
+        .tagbox a span:nth-child(2) {
+            top: -100%;
+            right: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, #03e9f4);
+            animation: btn-anim2 1s linear infinite;
+            animation-delay: .25s
+        }
+
+        @keyframes btn-anim2 {
+            0% {
+                top: -100%;
+            }
+
+            50%,
+            100% {
+                top: 100%;
+            }
+        }
+
+        .tagbox a span:nth-child(3) {
+            bottom: 0;
+            right: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(270deg, transparent, #03e9f4);
+            animation: btn-anim3 1s linear infinite;
+            animation-delay: .5s
+        }
+
+        @keyframes btn-anim3 {
+            0% {
+                right: -100%;
+            }
+
+            50%,
+            100% {
+                right: 100%;
+            }
+        }
+
+        .tagbox a span:nth-child(4) {
+            bottom: -100%;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(360deg, transparent, #03e9f4);
+            animation: btn-anim4 1s linear infinite;
+            animation-delay: .75s
+        }
+
+        @keyframes btn-anim4 {
+            0% {
+                bottom: -100%;
+            }
+
+            50%,
+            100% {
+                bottom: 100%;
+            }
+        }
+
+        .tagbox form a[data-C="red"] {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            color: #BB6688;
+            font-size: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            overflow: hidden;
+            transition: .5s;
+            letter-spacing: 4px
+        }
+
+        .tagbox a[data-C="red"]:hover {
+            background: #BB6688;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #BB6688,
+                0 0 25px #BB6688,
+                0 0 50px #BB6688,
+                0 0 100px #BB6688;
+        }
+
+        .tagbox a[data-C="red"] span {
+            position: absolute;
+            display: block;
+        }
+
+        .tagbox a[data-C="red"] span:nth-child(1) {
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #BB6688);
+            animation: btn-anim1 1s linear infinite;
+        }
+
+        .tagbox a[data-C="red"] span:nth-child(2) {
+            top: -100%;
+            right: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, #BB6688);
+            animation: btn-anim2 1s linear infinite;
+            animation-delay: .25s
+        }
+
+        .tagbox a[data-C="red"] span:nth-child(3) {
+            bottom: 0;
+            right: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(270deg, transparent, #BB6688);
+            animation: btn-anim3 1s linear infinite;
+            animation-delay: .5s
+        }
+
+        .tagbox a[data-C="red"] span:nth-child(4) {
+            bottom: -100%;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(360deg, transparent, #BB6688);
+            animation: btn-anim4 1s linear infinite;
+            animation-delay: .75s
+        }
+    </style>
+</head>
+
+<body>
+    <p style="color:red">{{ error }}</p>
+    <div class="container">
+        <div class="box">
+            <img class="add" src={{img}} alt="Comic Page">
+        </div>
+        <div class="box">
+            {% if data['Series'] %}
+            <div class="links-container">
+                系列:
+                {% for Series in data['Series'] %}
+                <a href="/comic?search={{Series}}">
+                    <span class="name">{{Series}}</span>
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if data['Role'] %}
+            <div class="links-container">
+                角色:
+                {% for Role in data['Role'] %}
+                <a href="/comic?search={{Role}}">
+                    <span class="name">{{Role}}</span>
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if data['Tag'] %}
+            <div class="links-container">
+                標籤:
+                {% for Tag in data['Tag'] %}
+                <a href="/comic?search={{Tag}}">
+                    <span class="name">{{Tag}}</span>
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% if not data.Role and not data.Tag and not data.Series %}
+            <p>沒有標籤</p>
+            {% endif %}
+        </div>
+        <div class="tagbox">
+            <form id="name_form" method="POST" action="/rename/{{id}}">
+                <br>
+                <div class="user-box">
+                    <input type="text" value="{{name}}" id="comic_name" name="comic_name" autocomplete="off" required>
+                    <label>名稱:</label>
+                </div>
+                <a href="#" data-C="red" onclick="return_delete_from()" style="float: left">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    刪除
+                </a>
+                <a href="#" onclick="return_name_form()" style="float: right">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    修改名稱
+                </a>
+            </form>
+            <form id="tag_from" method="POST" action="/update/{{id}}">
+                <select name="TagType" onchange="updateTagOptions()">
+                    <option value="">請選擇標籤類型</option>
+                    <option value="Series">系列</option>
+                    <option value="Role">角色</option>
+                    <option value="Tag">標籤</option>
+                </select>
+                <select name="Tag" id="tagSelect">
+                    <option value="">請選擇標籤</option>
+                </select><br><br>
+                <a href="/" data-C="red" id="exit" style="float: left">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    返回
+                </a>
+                <a href="/newtag">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    新增標籤
+                </a>
+                <a href="#" onclick="return_tag_from()" style="float: right">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    修改
+                </a><br><br>
+            </form>
+            <form id="delete_from" method="POST" action="/delete">
+                <input type="hidden" id="comic_id" name="comic_id" value="{{id}}">
+            </form>
+
+        </div>
+        <script>
+            // 這裡報錯是正常的(4個錯誤)
+            var tagsDict = {{ tags_dict | tojson | safe}};
+
+            function updateTagOptions() {
+                var tagTypeSelect = document.querySelector('select[name="TagType"]');
+                var tagSelect = document.querySelector('select[name="Tag"]');
+                var selectedTagType = tagTypeSelect.value;
+                var tagOptions = tagsDict[selectedTagType] || [];
+
+                // 清空原有選項
+                tagSelect.innerHTML = "";
+
+                // 添加新選項
+                tagOptions.forEach(function (option) {
+                    var optionElem = document.createElement('option');
+                    optionElem.value = option.TagId;
+                    optionElem.textContent = option.TagStr;
+                    tagSelect.appendChild(optionElem);
+                });
+            }
+            function return_name_form() {
+                document.getElementById('name_form').submit();
+            }
+            function return_tag_from() {
+                document.getElementById('tag_from').submit();
+            }
+            function return_delete_from() {
+                document.getElementById('delete_from').submit();
+            }
+        </script>
+</body>
+
+</html>
