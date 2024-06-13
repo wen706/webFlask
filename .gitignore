@@ -3,7 +3,7 @@ httpd.exe.lnk
 library.db
 run.cmd
 .vscode
-comicImg/
+private
 flask_app.wsgi
 
 # Byte-compiled / optimized / DLL files
