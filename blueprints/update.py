@@ -19,7 +19,7 @@ def update_comic_tag(comic_id, tag_id):
 
 @update.route('/update/<int:id>', methods=['GET', 'POST'])
 def selected(id):
-    if 'username' not in session:
+    if 'username' not in session or session['op'] != 0:
         return redirect(url_for('main.login'))
 
     if not method.sql.select_comic_exist(id):
@@ -45,7 +45,7 @@ def selected(id):
 
 @update.route('/update')
 def update_choose():
-    if 'username' not in session:
+    if 'username' not in session or session['op'] != 0:
         return redirect(url_for('main.login'))
 
     query = "SELECT ComicId, ComicName FROM Name"
@@ -57,7 +57,7 @@ def update_choose():
 
 @update.route('/rename/<int:id>', methods=['GET', 'POST'])
 def re_name(id):
-    if 'username' not in session:
+    if 'username' not in session or session['op'] != 0:
         return redirect(url_for('main.login'))
 
     if not method.sql.select_comic_exist(id):
@@ -74,6 +74,9 @@ def re_name(id):
 
 @update.route('/newtag', methods=['GET', 'POST'])
 def new_tags():
+    if 'username' not in session or session['op'] != 0:
+        return redirect(url_for('main.login'))
+
     if request.method == 'POST':
         new_tag_type = request.form['new_tag_type']
         tag_str = request.form['tag_str']

@@ -110,6 +110,14 @@
             請大家不要搞破壞！
         </p>
         <div class="home_button">
+            {% if login==2 %}
+            <a style="background-color: #BB6688;" href="/comic">
+                看漫畫
+            </a>
+            <a style="background-color: #CCAA88;" href="/logout">
+                登出
+            </a>
+            {% endif %}
             {% if login==1 %}
             <a style="background-color: #BB6688;" href="/comic">
                 看漫畫
@@ -122,6 +130,9 @@
             </a>
             <a style="background-color: #8888CC;" href="/confirm">
                 漫畫檢查
+            </a>
+            <a style="background-color: #CCAA88;" href="/new_user">
+                新增帳號
             </a>
             <a style="background-color: #CCAA88;" href="/logout">
                 登出

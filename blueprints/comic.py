@@ -17,7 +17,7 @@ comic = Blueprint('comic', __name__)
 
 @comic.route('/confirm')
 def before_request():  # 9B117044
-    if 'username' not in session:
+    if 'username' not in session or session['op'] != 0:
         return redirect(url_for('main.login'))
 
     select = method.sql.sqlite3_read("SELECT ComicId FROM Name", ())
@@ -56,7 +56,7 @@ def before_request():  # 9B117044
 
 @comic.route('/delete', methods=['GET', 'POST'])
 def delete():
-    if 'username' not in session:
+    if 'username' not in session or session['op'] != 0:
         return redirect(url_for('main.login'))
 
     if request.method == 'POST':
@@ -72,7 +72,7 @@ def delete():
 
 @comic.route('/download', methods=['GET', 'POST'])
 def download_comic():
-    if 'username' not in session:
+    if 'username' not in session or session['op'] != 0:
         return redirect(url_for('main.login'))
 
     if request.method == 'POST':

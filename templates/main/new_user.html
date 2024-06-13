@@ -21,7 +21,7 @@
         {% if error %}
         <p style="color: red;">{{error}}</p>
         {% endif %}
-        <form id="loginForm" method="POST" action="/login">
+        <form id="new_user" method="POST" action="/new_user">
             <div class="user-box">
                 <input type="text" id="username" name="username" autocomplete="off" required>
                 <label>帳號:</label>
@@ -29,6 +29,10 @@
             <div class="user-box">
                 <input type="password" id="password" name="password" autocomplete="off" required>
                 <label>密碼:</label>
+            </div>
+            <div class="user-box">
+                <input type="password" id="password_confirm" name="password_confirm" autocomplete="off" required>
+                <label>確認密碼:</label>
             </div>
             <a href="/" data-C="red" id="exit">
                 <span></span>
@@ -42,7 +46,7 @@
                 <span></span>
                 <span></span>
                 <span></span>
-                登入
+                註冊
             </a>
         </form>
         <script>
@@ -50,12 +54,12 @@
                 event.preventDefault(); // 阻止點擊超連結時的默認行為
 
                 // 手動觸發表單提交
-                document.getElementById('loginForm').submit();
+                document.getElementById('new_user').submit();
             });
             document.addEventListener('keydown', function (event) {
                 if (event.key === 'Enter') {
                     // 觸發表單的提交動作
-                    document.getElementById('loginForm').submit();
+                    document.getElementById('new_user').submit();
                 }
             });
         </script>

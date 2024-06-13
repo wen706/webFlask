@@ -34,6 +34,7 @@ def comic_look(id, page):
 def comic_detailed(id):
     if 'username' not in session:
         return redirect(url_for('main.login'))
+
     if not method.sql.select_comic_exist(id):
         return redirect(url_for('watch.comic_home'))
     select = "SELECT ComicPage FROM Name WHERE ComicId = ?"
@@ -48,6 +49,7 @@ def comic_detailed(id):
 def comic_home():  # url_for('comic.comicHome')
     if 'username' not in session:
         return redirect(url_for('main.login'))
+
     if len(request.args) > 0:
         param_value = request.args.get('search')
         query = """
