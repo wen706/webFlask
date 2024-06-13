@@ -16,7 +16,7 @@ comic = Blueprint('comic', __name__)
 
 
 @comic.route('/confirm')
-def before_request():  # 9B117044
+def confirm():  # 9B117044
     if 'username' not in session or session['op'] != 0:
         return redirect(url_for('main.login'))
 
@@ -50,6 +50,18 @@ def before_request():  # 9B117044
             old_folder = os.path.join(g.private, 'comicImg', str(old_id))
             new_folder = os.path.join(g.private, 'comicImg', str(new_id))
             os.rename(old_folder, new_folder)
+        new_id += 1
+
+    method.sql.sqlite3_write(
+        "DELETE FROM TagString WHERE TagId NOT IN (SELECT TagId FROM Tag);", ())
+
+    new_id = 1
+    select = method.sql.sqlite3_read("SELECT TagId FROM TagString", ())
+    TagString_id_list = sorted([int(row['TagId']) for row in select])
+    for old_id in TagString_id_list:
+        if new_id != old_id:
+            method.sql.sqlite3_write(
+                "UPDATE TagString SET TagId = ? WHERE TagId = ?", (new_id, old_id))
         new_id += 1
     return redirect(url_for('watch.comic_home'))
 

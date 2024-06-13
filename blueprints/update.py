@@ -80,11 +80,11 @@ def new_tags():
     if request.method == 'POST':
         new_tag_type = request.form['new_tag_type']
         tag_str = request.form['tag_str']
-
-        check = method.sql.sqlite3_read(
-            "SELECT * FROM TagString WHERE TagType = ? AND TagStr = ?", (new_tag_type, tag_str))
-        if len(check) == 0:
-            query = "INSERT INTO TagString (TagType, TagStr) VALUES (?, ?)"
-            method.sql.sqlite3_write(query, (new_tag_type, tag_str,))
+        if tag_str != '':
+            check = method.sql.sqlite3_read(
+                "SELECT * FROM TagString WHERE TagType = ? AND TagStr = ?", (new_tag_type, tag_str))
+            if len(check) == 0:
+                query = "INSERT INTO TagString (TagType, TagStr) VALUES (?, ?)"
+                method.sql.sqlite3_write(query, (new_tag_type, tag_str,))
 
     return render_template('tag/new.html')

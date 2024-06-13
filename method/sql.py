@@ -22,6 +22,7 @@ def sqlite3_write(query: str, select: tuple):
     conn = sqlite3.connect(sql)
     conn.row_factory = sqlite3.Row
     c = conn.cursor()
+    c.execute("PRAGMA foreign_keys = ON")  # 啟用外鍵約束
     c.execute(query, select)
     conn.commit()
     conn.close()
@@ -108,20 +109,23 @@ def init_db():
     ''', ())
 
     sqlite3_write('''
-    CREATE TABLE IF NOT EXISTS Tag (
-        ComicId INTEGER,
-        TagId INTEGER,
-        FOREIGN KEY(ComicId) REFERENCES Name(ComicId) ON DELETE CASCADE,
-        FOREIGN KEY(TagId) REFERENCES TagString(TagId) ON DELETE CASCADE,
-        PRIMARY KEY(ComicId, TagId)
-    )
-    ''', ())
-
-    sqlite3_write('''
     CREATE TABLE IF NOT EXISTS TagString (
         TagId INTEGER PRIMARY KEY,
         TagType TEXT NOT NULL,
         TagStr TEXT NOT NULL
+    )
+    ''', ())
+
+    # 因為外部鍵所以在Name,TagString後面
+    sqlite3_write('''
+    CREATE TABLE IF NOT EXISTS Tag (
+        ComicId INTEGER,
+        TagId INTEGER,
+        FOREIGN KEY(ComicId) REFERENCES Name(ComicId) 
+                  ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY(TagId) REFERENCES TagString(TagId) 
+                  ON DELETE CASCADE ON UPDATE CASCADE,
+        PRIMARY KEY(ComicId, TagId)
     )
     ''', ())
 
