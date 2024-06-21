@@ -93,8 +93,11 @@ def select_comic_max_id() -> int:
     漫畫名稱
     """
     select = "SELECT * FROM Name ORDER BY ComicId DESC LIMIT 1"
-    Tags = sqlite3_read(select, ())
-    return int(Tags[0]["ComicId"])
+    comic = sqlite3_read(select, ())
+    if comic != []:
+        return int(comic[0]["ComicId"])
+    else:
+        return 0
 
 
 def init_db():

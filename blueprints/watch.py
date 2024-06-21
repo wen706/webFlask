@@ -25,8 +25,11 @@ def comic_look(id, page):
 
     select = "SELECT ComicPage FROM Name WHERE ComicId = ?"
     totopage = method.sql.sqlite3_read(select, (id,))[0]['ComicPage']
+    if page > totopage:
+        return redirect(url_for('watch.comic_look', id=id, page=totopage))
     select = "SELECT TagType,TagStr FROM TagString INNER JOIN Tag on Tag.TagId = TagString.TagId WHERE Tag.ComicId = ?"
     data = method.sql.select_comic_tag(id)
+
     return render_template('watch/comic_watch.html', id=id, page=page, totopage=totopage, data=data)
 
 

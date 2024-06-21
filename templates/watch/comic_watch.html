@@ -94,13 +94,15 @@
         function SettingButtonClick(event) { window.location.href = '/'; }
     </script>
     <img id="comicImage" src="/comicImg/{{id}}/{{page}}.jpg" alt="Comic Page">
-
+    <div class="page-info" id="pageInfo">{{page}} / {{totopage}}</div>
     <script>
         const comicImage = document.getElementById("comicImage");
         let currentPage = parseInt("{{page}}");
         const totalPages = parseInt("{{totopage}}");
         const comicId = "{{id}}";
         const pageInfo = document.getElementById("pageInfo");
+
+        const preloadedPages = new Set(); // 用來記錄已經預載入的頁數
 
         comicImage.addEventListener("click", function (event) {
             const halfWidth = comicImage.offsetWidth / 2;
@@ -122,9 +124,13 @@
         });
 
         function preloadImages() {
-            for (var i = 1; i <= totalPages; i++) {
-                var img = new Image();
-                img.src = '/comicImg/' + comicId + '/' + i + '.jpg';
+            const preloadRange = 2; // 前後預載入圖片的範圍
+            for (let i = Math.max(1, currentPage - preloadRange); i <= Math.min(totalPages, currentPage + preloadRange); i++) {
+                if (!preloadedPages.has(i)) { // 如果該頁數還未預載入過
+                    const img = new Image();
+                    img.src = '/comicImg/' + comicId + '/' + i + '.jpg';
+                    preloadedPages.add(i); // 記錄該頁數已經預載入
+                }
             }
         }
 
@@ -138,8 +144,11 @@
             }, 500);
 
             history.replaceState(null, null, currentPage);
+
+            preloadImages(); // 在每次換頁後重新預載入圖片
         }
 
+        // 初始加載當前頁和前後各兩張圖片
         preloadImages();
     </script>
 </body>

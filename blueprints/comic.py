@@ -10,6 +10,8 @@ import os
 import shutil
 import method.sql
 import requests
+from PIL import Image
+from io import BytesIO
 from concurrent.futures import ThreadPoolExecutor
 # 創建第一個藍圖
 comic = Blueprint('comic', __name__)
@@ -99,7 +101,7 @@ def download_comic():
 
 comic_website_url = {}
 comic_website_url["nhentai"] = [
-    "https://i3.nhentai.net/galleries/", "/{}.jpg"]
+    "https://i3.nhentai.net/galleries/", "/{}.{}"]
 comic_website_url["nhentai(png)"] = [
     "https://i3.nhentai.net/galleries/", "/{}.jpg"]
 
@@ -111,13 +113,19 @@ def 下載漫畫(target_url, id, name, max_comic_page):
     # 下載圖片的函式
     def download_image(image_number):
         nonlocal max_comic_page
-        image_url = url.format(image_number)
+        image_url = url.format(image_number, "jpg")
         response = requests.get(image_url)
         if response.status_code == 200:
             with open(DIR+f"/{image_number}.jpg", "wb") as f:
                 f.write(response.content)
         else:
-            max_comic_page = min(image_number-1, max_comic_page)
+            image_url = url.format(image_number, "png")
+            response = requests.get(image_url)
+            if response.status_code == 200:
+                image = Image.open(BytesIO(response.content)).convert('RGB')
+                image.save(os.path.join(DIR, f"{image_number}.jpg"), "JPEG")
+            else:
+                max_comic_page = min(image_number-1, max_comic_page)
     # 理論上進不去
     if target_url not in comic_website_url:
         return

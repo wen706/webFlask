@@ -1,7 +1,6 @@
 #自己新增的
 httpd.exe.lnk
 library.db
-run.cmd
 .vscode
 private
 flask_app.wsgi
