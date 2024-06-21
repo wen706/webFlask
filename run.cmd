@@ -1,13 +1,13 @@
 @echo off
-rem åˆ‡æ›å·¥ä½œç›®éŒ„è‡³æ‰¹æ¬¡æª”æ‰€åœ¨ç›®éŒ„
+rem ¤Á´«¤u§@¥Ø¿ı¦Ü§å¦¸ÀÉ©Ò¦b¥Ø¿ı
 cd /d "%~dp0"
 
-rem æª¢æŸ¥ env è³‡æ–™å¤¾æ˜¯å¦å­˜åœ¨
+rem ÀË¬d env ¸ê®Æ§¨¬O§_¦s¦b
 if not exist "env" (
-    echo å»ºç«‹è™›æ“¬ç’°å¢ƒ...
+    echo «Ø¥ßµêÀÀÀô¹Ò...
     python -m venv env
 
-    echo æ¿€æ´»è™›æ“¬ç’°å¢ƒä¸¦å®‰è£ä¾è³´...
+    echo ¿E¬¡µêÀÀÀô¹Ò¨Ã¦w¸Ë¨Ì¿à...
     call env\Scripts\activate
     pip install -r requirements.txt
 )
