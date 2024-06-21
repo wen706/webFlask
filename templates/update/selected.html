@@ -465,13 +465,20 @@
                 // 清空原有選項
                 tagSelect.innerHTML = "";
 
-                // 添加新選項
-                tagOptions.forEach(function (option) {
-                    var optionElem = document.createElement('option');
-                    optionElem.value = option.TagId;
-                    optionElem.textContent = option.TagStr;
-                    tagSelect.appendChild(optionElem);
-                });
+                if (tagOptions.length === 0) {
+                    var noTagOption = document.createElement('option');
+                    noTagOption.value = "";
+                    noTagOption.textContent = "還沒有標籤";
+                    tagSelect.appendChild(noTagOption);
+                } else {
+                    // 添加新選項
+                    tagOptions.forEach(function (option) {
+                        var optionElem = document.createElement('option');
+                        optionElem.value = option.TagId;
+                        optionElem.textContent = option.TagStr;
+                        tagSelect.appendChild(optionElem);
+                    });
+                }
             }
             function return_name_form() {
                 document.getElementById('name_form').submit();

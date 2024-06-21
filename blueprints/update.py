@@ -27,7 +27,7 @@ def selected(id):
 
     error = ''
     if request.method == 'POST':
-        if request.form['TagType'] != "":
+        if request.form['TagType'] != "" and request.form['Tag'] != "":
             tag = request.form['Tag']
             update_comic_tag(id, tag)
             return redirect(url_for('update.selected', id=id))
@@ -39,7 +39,6 @@ def selected(id):
     tag = method.sql.select_all_tag()
     name = method.sql.select_comic_name(id)
 
-    print(data)
     return render_template('update/selected.html', id=id, img=img, data=data, tags_dict=tag, error=error, name=name)
 
 
@@ -51,7 +50,6 @@ def update_choose():
     query = "SELECT ComicId, ComicName FROM Name"
     select = ()
     search = method.sql.sqlite3_read(query, select)
-    print(search)
     return render_template('update/choose.html', comic=search)
 
 
